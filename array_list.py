@@ -22,15 +22,36 @@ class ArrayList:
         #Returns a string with all items from the array
         #Have a comma and a space between them
         # but no brackets ([ ]) around them
-
-        #return f"ArrayList: {self.arr}"
         return f"ArrayList: {', '.join(map(str, self.arr))}"
     
 
     #Time complexity: O(n) - linear time in size of list
     def prepend(self, value):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        """Add a new value add index 0 and move all other values to the right"""
+
+        #This might be cheating, but since we cannot use the len() function,
+        #maybe this is ok ?
+        count = 0
+        for _ in self.arr:
+            count += 1
+
+        print("Length of the list:", count)
+
+        #make a new array that is one size bigger
+        self.new_arr = [0] * (self.size+1)
+
+        #copy elements from the old array into the new one
+        for i in range(1,(count+1)):
+            self.new_arr[i] = self.arr[i-1]
+
+        #append the new element at the end
+        self.new_arr[0] = value
+
+        #print statements after appending
+        print(f"PREPEND original array: {self.arr}")
+        print(f"PREPEND new array: {self.new_arr}")
+        
+        return self.new_arr
 
     #Time complexity: O(n) - linear time in size of list
     def insert(self, value, index):
@@ -45,7 +66,7 @@ class ArrayList:
         return self.arr
     
     def insert_into_list(self, value, index):
-        """TEST : this function is based on the teachers demo,
+        """TEST function : this function is based on the teachers demo,
             this method doesn't care about indexout of bounds
             it pushes the last value out of the list"""
         i = len(self.arr) - 1 #ef listinn er 4 stök, þá byrjum við með stak nr.3
@@ -61,10 +82,25 @@ class ArrayList:
 
     #Time complexity: O(1) - constant time
     def append(self, value):
-        #Copy the contents of the old array into the new one, one element at a time.
-        # TODO: remove 'pass' and implement functionality
-        pass
+        """Copies the contents of the old array into a new one.
+        Adds a new item to the new array after the last item"""
+        
+        #make a new array that is one size bigger
+        self.new_arr = [0] * (self.size+1)
 
+        #copy elements from the old array into the new one
+        for i in range(len(self.new_arr)-1):
+            self.new_arr[i] = self.arr[i]
+
+        #append the new element at the end
+        self.new_arr[len(self.new_arr)-1] = value
+
+        #print statements after appending
+        print(f"original array: {self.arr}")
+        print(f"new array: {self.new_arr}")
+        
+        return self.new_arr
+    
     #Time complexity: O(1) - constant time
     def set_at(self, value, index):
         # TODO: remove 'pass' and implement functionality
@@ -123,12 +159,19 @@ if __name__ == "__main__":
     # Do not add them outside this if statement
     # and make sure they are at this indent level
 
-    arr_lis = ArrayList(3)
-    print(arr_lis)
-    arr_lis.insert(2,0)
-    print(arr_lis)
+    # arr_lis = ArrayList(3)
+    # print(arr_lis)
+    # arr_lis.insert(2,0)
+    # print(arr_lis)
     
-    new_list = ArrayList(3)
+    # new_list = ArrayList(3)
 
-    new_list.insert_into_list(2,1)
-    print(new_list)
+    # new_list.insert_into_list(2,1)
+    # print(new_list)
+
+    arr_lis = ArrayList(3)
+    arr_lis.insert(1,0)
+    arr_lis.insert(2,1)
+    arr_lis.insert(3,2)
+    arr_lis.append(9)
+    arr_lis.prepend(6)
