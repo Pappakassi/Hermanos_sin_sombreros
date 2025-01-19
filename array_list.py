@@ -148,35 +148,58 @@ class ArrayList:
     def resize(self):
         #Re-allocates memory for a larger array and populates it with the original array’s items
         #Rule of Thumb: Double the Size
+
+        #get length of the original array
         length = self.count_items(self.arr)
 
+        #we double the length
         double_size = 2 * length
+
+        #we make array with the length
         new_array = [0] * double_size
 
-        print(f"new array: {new_array}")
-
+        # we initialize a counter
         i = 0
 
-        while self.arr[i] <= (length-1):
-            #while the length of the array is the old length, it keeps on adding elements
-            #we are using the get_at() method and the append() to put the new value
-            self.new_array = self.append((self.arr)[i])
+        #while the counter is less than the old length
+        while i < length:
+            #we take the values from the new_array and overwrite them with the values of the old one
+            new_array[i] = self.arr[i]
+            #we increment the counter
             i += 1
-
-        #here we have to copy the elements of the old array into the new one
-
         
-        return new_array
+        # we overwrite the old array with the new array
+        self.arr = new_array
+
+        #we overwrite the old length with the new length
+        length = double_size
+
+        # while self.arr[i] <= (length-1):
+        #     while the length of the array is the old length, it keeps on adding elements
+        #     we are using the get_at() method and the append() to put the new value
+        #     self.new_array = self.append((self.arr)[i])
+        #     i += 1
+        
+        #return self.arr
 
     #Time complexity: O(n) - linear time in size of list
     def remove_at(self, index):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        self.set_at(0,index)
 
     #Time complexity: O(1) - constant time
     def clear(self):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        #we make a while/ for loop and at each index the loop uses remove_at to remove the index
+        #while the counter is less than the old length
+
+        length = self.count_items(self.arr)
+
+        i=0
+
+        while i < (length-1):
+            #we take the values from the new_array and overwrite them with the values of the old one
+            self.remove_at(i)
+            #we increment the counter
+            i += 1
 
     #Time complexity: O(n) - linear time in size of list
     def insert_ordered(self, value):
@@ -213,4 +236,10 @@ if __name__ == "__main__":
     print(f"changed list : {new_list}")
 
     new_list.resize()
+    print(new_list)
+
+    new_list.remove_at(0)
+    print(new_list)
+
+    new_list.clear()
     print(new_list)
