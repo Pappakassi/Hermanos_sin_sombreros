@@ -1,3 +1,5 @@
+import functions
+
 class IndexOutOfBounds(Exception):
     pass
 
@@ -32,75 +34,56 @@ class ArrayList:
 
         #This might be cheating, but since we cannot use the len() function,
         #maybe this is ok ?
-        count = 0
-        for _ in self.arr:
-            count += 1
-
-        print("Length of the list:", count)
-
+        #count = 0
+        #for _ in self.arr:
+    
+        length = self.count_items(self.arr)
+        print("Length of the list:", length)
+        pre_value = self.insert(value, 0)
+        print(f"prevuale : {pre_value}")
         #make a new array that is one size bigger
-        self.new_arr = [0] * (self.size+1)
+        #self.new_arr = [0] * (self.size+1)
 
         #copy elements from the old array into the new one
-        for i in range(1,(count+1)):
-            self.new_arr[i] = self.arr[i-1]
+        #for i in range(1,(length+1)):
+        #    self.new_arr[i] = self.arr[i-1]
 
         #append the new element at the end
-        self.new_arr[0] = value
+        #self.new_arr[0] = value
 
         #print statements after appending
-        print(f"PREPEND original array: {self.arr}")
-        print(f"PREPEND new array: {self.new_arr}")
+        #print(f"PREPEND original array: {self.arr}")
+        #print(f"PREPEND new array: {self.new_arr}")
         
-        return self.new_arr
+        #return self.new_arr
 
+    
     #Time complexity: O(n) - linear time in size of list
     def insert(self, value, index):
-        """inserts a value at the given index"""
-        # Check if the index is valid
-        if index < -1 or index > len(self.arr)+1:
-            raise IndexOutOfBounds()
-        #It should be possible to add to the front and back of the list, and anywhere in between
-        else:
-            self.arr[index] = value
-
-        return self.arr
-    
-    def insert_into_list(self, value, index):
         """TEST function : this function is based on the teachers demo,
             this method doesn't care about indexout of bounds
             it pushes the last value out of the list"""
-        i = len(self.arr) - 1 #ef listinn er 4 stök, þá byrjum við með stak nr.3
-        while i > index: #förum ekki lengra til vinstri en index'ið sem var sett inn
-            self.arr[i] = self.arr[i-1] #stak nr. 4 fær gildið á staki nr.3
-            #við erum að færa allt til hægri með því að 
-            #gefa staki á ákveðnu indexi, gildið á stakinu sem var á undan
-            i -=1 #svo lækkum við i'ið þar til það nær indexinum
-        #þegar þessi lúppa er búin að rönna þá rönnar þetta hérna að neðan
-        self.arr[index] = value
+        
+        #error checking
+        if index < -1 or index > self.count_items(self.arr)+1:
+            raise IndexOutOfBounds()
+        else:
+            length = self.count_items(self.arr)
+            i = length - 1
+            while i > index:
+                self.arr[i] = self.arr[i-1]
+                i -=1
+            self.arr[index] = value
 
-        return self.arr
+            return self.arr
 
     #Time complexity: O(1) - constant time
     def append(self, value):
-        """Copies the contents of the old array into a new one.
-        Adds a new item to the new array after the last item"""
-        
-        #make a new array that is one size bigger
-        self.new_arr = [0] * (self.size+1)
-
-        #copy elements from the old array into the new one
-        for i in range(len(self.new_arr)-1):
-            self.new_arr[i] = self.arr[i]
-
-        #append the new element at the end
-        self.new_arr[len(self.new_arr)-1] = value
-
-        #print statements after appending
-        print(f"original array: {self.arr}")
-        print(f"new array: {self.new_arr}")
-        
-        return self.new_arr
+        """Our append method"""
+        length = self.count_items(self.arr)
+        print("Length of the list:", length)
+        pre_value = self.insert(value, (length-1))
+        print(f"some stuff here : {pre_value}")
     
     #Time complexity: O(1) - constant time
     def set_at(self, value, index):
@@ -108,20 +91,12 @@ class ArrayList:
         # Overwrites the current value there
         # If the index is not within the current list, raise IndexOutOfBounds()
         # Initialize a counter
-        length = 0
-
-        # Use a while loop to count elements
-        while True:
-            try:
-                _ = self.arr[length]
-                length += 1
-            except IndexError:
-                break
+        length = self.count_items(self.arr)
         
         if length > index: #förum ekki lengra til vinstri en index'ið sem var sett inn
             self.arr[index] = value
         else:
-            raise IndexOutOfBounds()
+            raise IndexOutOfBounds("Index out of bounds!")
         
         return self.arr
 
@@ -153,7 +128,9 @@ class ArrayList:
         
         length = self.count_items(self.arr)
 
-        if length > index: #förum ekki lengra til vinstri en index'ið sem var sett inn
+        if not self.arr:
+            raise Empty("List is empty!")
+        elif length > index: 
             return self.arr[index]
         else:
             raise IndexOutOfBounds()
@@ -171,10 +148,25 @@ class ArrayList:
     def resize(self):
         #Re-allocates memory for a larger array and populates it with the original array’s items
         #Rule of Thumb: Double the Size
-        double_size = 2 * self.size
-        self.new_array = [0] * double_size
+        length = self.count_items(self.arr)
+
+        double_size = 2 * length
+        new_array = [0] * double_size
+
+        print(f"new array: {new_array}")
+
+        i = 0
+
+        while self.arr[i] <= (length-1):
+            #while the length of the array is the old length, it keeps on adding elements
+            #we are using the get_at() method and the append() to put the new value
+            self.new_array = self.append((self.arr)[i])
+            i += 1
+
+        #here we have to copy the elements of the old array into the new one
+
         
-        return self.new_array
+        return new_array
 
     #Time complexity: O(n) - linear time in size of list
     def remove_at(self, index):
@@ -209,27 +201,16 @@ if __name__ == "__main__":
     # Do not add them outside this if statement
     # and make sure they are at this indent level
 
-    # arr_lis = ArrayList(3)
-    # print(arr_lis)
-    # arr_lis.insert(2,0)
-    # print(arr_lis)
+    print("-------------------")
+    new_list = ArrayList(3)
+    print(new_list)
+    new_list.append(2)
+    print(new_list)
     
-    # new_list = ArrayList(3)
+    new_list.set_at(8,2)
+    print(f"changed list : {new_list}")
+    new_list.set_at(3,0)
+    print(f"changed list : {new_list}")
 
-    # new_list.insert_into_list(2,1)
-    # print(new_list)
-
-    arr_lis = ArrayList(3)
-    arr_lis.insert(1,0)
-    arr_lis.insert(2,1)
-    arr_lis.insert(3,2)
-    arr_lis.append(9)
-    arr_lis.prepend(6)
-    arr_lis.set_at(8,1)
-    print(f"set at: {arr_lis}")
-
-    value = arr_lis.get_at(1)
-    print(f"This is the value: {value}")
-
-    smalue = arr_lis.get_last()
-    print(f"This is the value: {smalue}")
+    new_list.resize()
+    print(new_list)
