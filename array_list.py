@@ -169,8 +169,12 @@ class ArrayList:
 
     #Time complexity: O(n) - linear time in size of list
     def resize(self):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        #Re-allocates memory for a larger array and populates it with the original array’s items
+        #Rule of Thumb: Double the Size
+        double_size = 2 * self.size
+        self.new_array = [0] * double_size
+        
+        return self.new_array
 
     #Time complexity: O(n) - linear time in size of list
     def remove_at(self, index):
