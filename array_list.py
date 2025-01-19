@@ -5,6 +5,7 @@ class NotFound(Exception):
     pass
 
 class Empty(Exception):
+    "Raised when an array is empty"
     pass
 
 class NotOrdered(Exception):
@@ -103,28 +104,77 @@ class ArrayList:
     
     #Time complexity: O(1) - constant time
     def set_at(self, value, index):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        # Sets the value at a specific location to a specific value
+        # Overwrites the current value there
+        # If the index is not within the current list, raise IndexOutOfBounds()
+        # Initialize a counter
+        length = 0
+
+        # Use a while loop to count elements
+        while True:
+            try:
+                _ = self.arr[length]
+                length += 1
+            except IndexError:
+                break
+        
+        if length > index: #förum ekki lengra til vinstri en index'ið sem var sett inn
+            self.arr[index] = value
+        else:
+            raise IndexOutOfBounds()
+        
+        return self.arr
 
     #Time complexity: O(1) - constant time
     def get_first(self):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        if not self.arr:
+            raise Empty("The container is empty!")
+        else:
+            return self.arr[0]
+            
+    def count_items(self, array):
+        # Initialize a counter
+        length = 0
+
+        # Use a while loop to count elements
+        while True:
+            try:
+                _ = array[length]
+                length += 1
+            except IndexError:
+                break
+        
+        return length
 
     #Time complexity: O(1) - constant time
     def get_at(self, index):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        #Returns the value at a specific location in the list
+        #If the index is not within the current list, raise IndexOutOfBounds()
+        
+        length = self.count_items(self.arr)
+
+        if length > index: #förum ekki lengra til vinstri en index'ið sem var sett inn
+            return self.arr[index]
+        else:
+            raise IndexOutOfBounds()
 
     #Time complexity: O(1) - constant time
     def get_last(self):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        length = self.count_items(self.arr)
+
+        if not self.arr:
+            raise Empty("The container is empty!")
+        else:
+            return self.arr[length-1]
 
     #Time complexity: O(n) - linear time in size of list
     def resize(self):
-        # TODO: remove 'pass' and implement functionality
-        pass
+        #Re-allocates memory for a larger array and populates it with the original array’s items
+        #Rule of Thumb: Double the Size
+        double_size = 2 * self.size
+        self.new_array = [0] * double_size
+        
+        return self.new_array
 
     #Time complexity: O(n) - linear time in size of list
     def remove_at(self, index):
@@ -175,3 +225,11 @@ if __name__ == "__main__":
     arr_lis.insert(3,2)
     arr_lis.append(9)
     arr_lis.prepend(6)
+    arr_lis.set_at(8,1)
+    print(f"set at: {arr_lis}")
+
+    value = arr_lis.get_at(1)
+    print(f"This is the value: {value}")
+
+    smalue = arr_lis.get_last()
+    print(f"This is the value: {smalue}")
